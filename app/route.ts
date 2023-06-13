@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 export async function GET(request: Request) {
-    return new Response((await isJewishRestDay(moment("2023-06-10"))).toString());
+    return new Response((await isJewishRestDay(moment())).toString());
 }
 
 const isJewishRestDay = async (date: moment.Moment): Promise<boolean> => {
@@ -16,10 +16,11 @@ const isJewishRestDay = async (date: moment.Moment): Promise<boolean> => {
       const response = await axios.get(url);
       const holidays = response.data.items;
 
-     console.log(holidays.length)
+      //console.log(holidays.length)
+      //! && (holiday.category === 'holiday' || holiday.category === 'candles')
       for (const holiday of holidays) {
         console.log(holiday.date,holiday.category)
-        if (holiday.date === formattedDate && (holiday.category === 'holiday' || holiday.category === 'candles')) {
+        if (holiday.date === formattedDate ) {
           return true;
         }
       }
@@ -27,6 +28,6 @@ const isJewishRestDay = async (date: moment.Moment): Promise<boolean> => {
       return false;
     } catch (error) {
       console.error('An error occurred while fetching data:', error);
-      return false;
+      return true;
     }
   }
